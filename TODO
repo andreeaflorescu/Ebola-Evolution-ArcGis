@@ -1,0 +1,20 @@
+link time slider
+    https://developers.arcgis.com/javascript/jssamples/time_sliderwithdynamiclayer.html
+    https://developers.arcgis.com/javascript/jssamples/widget_histogram_time_slider.html
+
+1. Scris JSON - pe ani - interval de 4 ani; data de inceput 1974
+    - un json cu toti anii
+    - de modificat tabelul sa fie doar ani, fara luni
+    - {
+
+      }
+    - un json cu coordonate pentru fiecare tara - de verificat daca exista api de la arcgis care returneaza coordonate dupa tara
+2. Situatia pentru toti anii
+3. Timeslider
+    startDate=x
+    endDate=y
+    toate jsoanele x.json si y.json
+4. Buline
+5. Pop-up
+6. De fixat eroarea cu harta - la inceput nu se incarca harta
+7. De mutat js in fisiere separate
