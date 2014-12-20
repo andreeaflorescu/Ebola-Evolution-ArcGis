@@ -2,36 +2,175 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
-    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>SimpleMarkerSymbol with SVG Path - Simplified</title>
+    <link rel="stylesheet" href="http://js.arcgis.com/3.11/dijit/themes/claro/claro.css">
+    <!--<link rel="stylesheet" href="http://js.arcgis.com/3.11/dojox/widget/ColorPicker/ColorPicker.css">-->
     <link rel="stylesheet" href="http://js.arcgis.com/3.11/esri/css/esri.css">
     <style>
-        html, body, #map {
+        html, body {
+            height: 97%;
+            width: 98%;
+            margin: 1%;
+        }
+
+        #rightPane {
+            width: 20%;
             height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
+            float: right;
+            border: solid 1px #97DCF2;
         }
-        body {
-            background-color: #FFF;
-            overflow: hidden;
-            font-family: "Trebuchet MS";
+
+        #map {
+            width: 78%;
+            height: 100%;
         }
+
+        #legendPane {
+            border: solid #97DCF2 1px;
+        }
+
+        .circle {
+            width: 20px;
+            height: 20px;
+            border: solid 1px;
+            border-radius: 50%;
+            margin: 5px;
+            margin-top: 0px;
+            display: inline-block;
+        }
+
+        .intervals {
+            position: absolute;
+        }
+
     </style>
     <script src="http://js.arcgis.com/3.11/"></script>
     <script>
         var map;
 
-        require(["esri/map", "dojo/domReady!"], function(Map) {
-            map = new Map("map", {
-                basemap: "gray",
-                center: [0, 37.75] // longitude, latitude
+        require([
+            "esri/map","esri/layers/FeatureLayer", "esri/dijit/Legend",
+             "esri/geometry/Point",
+            "esri/symbols/SimpleMarkerSymbol", "esri/graphic",
+            "dojo/_base/array", "dojo/dom-style", "dojox/widget/ColorPicker",
+            "dojo/domReady!"
+        ], function(
+                Map, Point,
+                SimpleMarkerSymbol, Graphic,
+                arrayUtils, FeatureLayer, Legend
+                ) {
+
+            map = new Map("map",{
+                basemap: "oceans",
+                center: [0, 37.75],
+                zoom: 1
             });
+
+            map.on("load", mapLoaded);
+
+            //add the legend
+            map.on("layers-add-result", function (evt) {
+                var layerInfo = arrayUtils.map(evt.layers, function (layer, index) {
+                    return {layer:layer.layer, title:layer.layer.name};
+                });
+                if (layerInfo.length > 0) {
+                    var legendDijit = new Legend({
+                        map: map,
+                        layerInfos: layerInfo
+                    }, "legendDiv");
+                    legendDijit.startup();
+                }
+            });
+
+            function mapLoaded(){
+                var points = [[19.82,41.33],[16.37,48.21],[18.38,43.85],[23.32,42.7],[16,45.8],[19.08,47.5],[12.48,41.9],[21.17,42.67],[21.43,42],[19.26,42.44],[26.1,44.43],[12.45,43.93],[20.47,44.82],[17.12,48.15],[14.51,46.06],[12.45,41.9]];
+                var iconPath = "M24.0,2.199C11.9595,2.199,2.199,11.9595,2.199,24.0c0.0,12.0405,9.7605,21.801,21.801,21.801c12.0405,0.0,21.801-9.7605,21.801-21.801C45.801,11.9595,36.0405,2.199,24.0,2.199zM31.0935,11.0625c1.401,0.0,2.532,2.2245,2.532,4.968S32.4915,21.0,31.0935,21.0c-1.398,0.0-2.532-2.2245-2.532-4.968S29.697,11.0625,31.0935,11.0625zM16.656,11.0625c1.398,0.0,2.532,2.2245,2.532,4.968S18.0555,21.0,16.656,21.0s-2.532-2.2245-2.532-4.968S15.258,11.0625,16.656,11.0625zM24.0315,39.0c-4.3095,0.0-8.3445-2.6355-11.8185-7.2165c3.5955,2.346,7.5315,3.654,11.661,3.654c4.3845,0.0,8.5515-1.47,12.3225-4.101C32.649,36.198,28.485,39.0,24.0315,39.0z";
+                var initColor = "#ce641d";
+                arrayUtils.forEach(points, function(point) {
+                    var graphic = new Graphic(new Point(point), createSymbol(iconPath, initColor));
+                    map.graphics.add(graphic);
+                });
+
+//                var colorPicker = new ColorPicker({}, "picker1");
+//                colorPicker.setColor(initColor);
+//                domStyle.set(colorPicker, "left", "500px");
+//                colorPicker.on("change", function(){
+//                    var colorCode = this.hexCode.value;
+//                    map.graphics.graphics.forEach(function(graphic){
+//                        graphic.setSymbol(createSymbol(iconPath, colorCode));
+//                    });
+//                });
+            }
+
+            function createSymbol(path, color){
+                var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
+                markerSymbol.setPath(path);
+                markerSymbol.setColor(new dojo.Color(color));
+                markerSymbol.setOutline(null);
+                return markerSymbol;
+            }
         });
     </script>
 </head>
+<body class="claro">
+<div id="content"
+     data-dojo-type="dijit/layout/BorderContainer"
+     data-dojo-props="design:'headline', gutters:true"
+     style="width: 100%; height: 100%; margin: 0;">
 
-<body>
-<div id="map"></div>
+    <div id="rightPane"
+         data-dojo-type="dijit/layout/ContentPane"
+         data-dojo-props="region:'right'">
+
+        <div data-dojo-type="dijit/layout/AccordionContainer">
+            <div data-dojo-type="dijit/layout/ContentPane" id="legendPane"
+                 data-dojo-props="title:'Legend', selected:true">
+                <div id="legendDiv"></div>
+            </div>
+            <div style="padding: 5px" data-dojo-type="dijit/layout/ContentPane"
+                 data-dojo-props="title:'Pane 2'">
+                <h2>Legenda:</h2>
+                <div>
+                    <div>
+                        <div style="background: red" class="circle">
+
+                        </div>
+                        <span class="intervals">280</span>
+                    </div>
+
+                    <div>
+                        <div style="background: orange" class="circle">
+
+                        </div>
+                        <span class="intervals">280</span>
+                    </div>
+
+                    <div>
+                        <div style="background: yellow" class="circle">
+
+                        </div>
+                        <span class="intervals">280</span>
+                    </div>
+
+                    <div>
+                        <div style="background: green" class="circle">
+
+                        </div>
+                        <span class="intervals">280</span>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="map"
+         data-dojo-type="dijit/layout/ContentPane"
+         data-dojo-props="region:'center'"
+         style="overflow:hidden;">
+    </div>
+</div>
 </body>
 </html>
