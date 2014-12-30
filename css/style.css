@@ -1,0 +1,35 @@
+html, body {
+    height: 97%;
+    width: 98%;
+    margin: 1%;
+}
+
+#rightPane {
+    width: 20%;
+    height: 100%;
+    float: right;
+    border: solid 1px #97DCF2;
+}
+
+#map {
+    width: 78%;
+    height: 100%;
+}
+
+#legendPane {
+    border: solid #97DCF2 1px;
+}
+
+.circle {
+    width: 20px;
+    height: 20px;
+    border: solid 1px;
+    border-radius: 50%;
+    margin: 5px;
+    margin-top: 0px;
+    display: inline-block;
+}
+
+.intervals {
+    position: absolute;
+}
