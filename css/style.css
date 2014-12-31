@@ -32,4 +32,9 @@ html, body {
 
 .intervals {
     position: absolute;
+    margin-left: 20px;
+}
+
+.text-center {
+    text-align: center;
 }
