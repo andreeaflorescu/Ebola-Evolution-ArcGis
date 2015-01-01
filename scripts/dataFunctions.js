@@ -3,8 +3,9 @@
  */
 
 var countriesJSON;
+var coordinatesJSON;
 
-function makeHttpRequest(url, callback_function) {
+function makeHttpRequest(url, type,  callback) {
     var xmlhttp;
     // code for IE7+, Firefox, Chrome, Opera, Safari
     if (window.XMLHttpRequest) {
@@ -15,7 +16,12 @@ function makeHttpRequest(url, callback_function) {
     }
     xmlhttp.onreadystatechange=function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            callback_function(JSON.parse(xmlhttp.responseText));
+            if (type == "country") {
+                countriesJSON = JSON.parse(xmlhttp.responseText)
+            } else {
+                coordinatesJSON = JSON.parse(xmlhttp.responseText)
+            }
+            callback();
         }
 
     }
@@ -23,12 +29,19 @@ function makeHttpRequest(url, callback_function) {
     xmlhttp.send();
 }
 
-
 function initData() {
     var url = "data/bigData.json";
-    makeHttpRequest(url, getCountriesNames);
-    url = "data/coordinates.json";
-    makeHttpRequest(url, print);
+    makeHttpRequest(url, "country", initCoord);
+    console.log(countriesJSON);
+}
+
+function initCoord() {
+    var url = "data/coordinates.json";
+    makeHttpRequest(url, "coord", finishedLoading);
+}
+
+function finishedLoading() {
+    initMap();
 }
 
 function getCountriesNames(countriesJSON) {
@@ -42,10 +55,4 @@ function getCountriesNames(countriesJSON) {
     return res;
 }
 
-function print(json) {
-    console.log(json);
-}
-
-function getCoordinates(countryName) {
-
-}
+initData();
