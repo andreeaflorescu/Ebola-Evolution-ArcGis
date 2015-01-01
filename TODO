@@ -16,6 +16,7 @@ link time slider
     endDate=y
     toate jsoanele x.json si y.json
 4. Buline
+https://developers.arcgis.com/javascript/jssamples/graphics_svg_path.html
 5. Pop-up
     https://developers.arcgis.com/javascript/jssamples/popup_relatedrecords.html
 6. De fixat eroarea cu harta - la inceput nu se incarca harta -> eroare in functia mapLoaded

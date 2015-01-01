@@ -12,7 +12,12 @@ require([
     "esri/symbols/SimpleMarkerSymbol",
     "esri/graphic",
     "dojo/_base/array",
-    "esri/InfoTemplate"
+    "esri/InfoTemplate",
+    "esri/layers/ArcGISDynamicMapServiceLayer",
+    "esri/TimeExtent",
+    "esri/dijit/TimeSlider",
+    "dojo/dom",
+    "dojo/domReady!"
 ], function(
     Map,
     FeatureLayer,
@@ -21,7 +26,11 @@ require([
     SimpleMarkerSymbol,
     Graphic,
     arrayUtils,
-    InfoTemplate
+    InfoTemplate,
+    ArcGISDynamicMapServiceLayer,
+    TimeExtent,
+    TimeSlider,
+    dom
     ) {
 
     map = new Map("map",{
@@ -29,6 +38,52 @@ require([
         center: [0, 37.75],
         zoom: 2
     });
+
+    map.on("layers-add-result", initSlider);
+
+    var opLayer = new ArcGISDynamicMapServiceLayer("http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Petroleum/KSWells/MapServer");
+    opLayer.setVisibleLayers([0]);
+
+    //apply a definition expression so only some features are shown
+    var layerDefinitions = [];
+    layerDefinitions[0] = "FIELD_KID=1000148164";
+    opLayer.setLayerDefinitions(layerDefinitions);
+
+    //add the gas fields layer to the map
+    map.addLayers([opLayer]);
+
+    function initSlider() {
+        var timeSlider = new TimeSlider({
+            style: "width: 78%;"
+        }, dom.byId("timeSliderDiv"));
+        map.setTimeSlider(timeSlider);
+
+        var timeExtent = new TimeExtent();
+        timeExtent.startTime = new Date("1/1/1921 UTC");
+        timeExtent.endTime = new Date("12/31/2009 UTC");
+        timeSlider.setThumbCount(2);
+        timeSlider.createTimeStopsByTimeInterval(timeExtent, 2, "esriTimeUnitsYears");
+        timeSlider.setThumbIndexes([0,1]);
+        timeSlider.setThumbMovingRate(2000);
+        timeSlider.startup();
+
+        //add labels for every other time stop
+        var labels = arrayUtils.map(timeSlider.timeStops, function(timeStop, i) {
+            if ( i % 2 === 0 ) {
+                return timeStop.getUTCFullYear();
+            } else {
+                return "";
+            }
+        });
+
+        timeSlider.setLabels(labels);
+
+        timeSlider.on("time-extent-change", function(evt) {
+            var startValString = evt.startTime.getUTCFullYear();
+            var endValString = evt.endTime.getUTCFullYear();
+            dom.byId("daterange").innerHTML = "<i>" + startValString + " and " + endValString  + "<\/i>";
+        });
+    }
 
     map.on("load", function(){
         var points = [[19.82,41.33],[16.37,48.21],[18.38,43.85],[23.32,42.7],[16,45.8],[19.08,47.5],[12.48,41.9],[21.17,42.67],[21.43,42],[19.26,42.44],[26.1,44.43],[12.45,43.93],[20.47,44.82],[17.12,48.15],[14.51,46.06],[12.45,41.9]];
@@ -52,20 +107,6 @@ require([
         });
     });
 
-    //add the legend
-    map.on("layers-add-result", function (evt) {
-        var layerInfo = arrayUtils.map(evt.layers, function (layer, index) {
-            return {layer:layer.layer, title:layer.layer.name};
-        });
-        if (layerInfo.length > 0) {
-            var legendDijit = new Legend({
-                map: map,
-                layerInfos: layerInfo
-            }, "legendDiv");
-            legendDijit.startup();
-        }
-    });
-
     function createSymbol(color, size){
         var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
         markerSymbol.setColor(new dojo.Color(color));
@@ -73,4 +114,5 @@ require([
         markerSymbol.setOutline(null);
         return markerSymbol;
     }
+
 });

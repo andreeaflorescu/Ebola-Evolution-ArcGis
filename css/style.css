@@ -13,7 +13,12 @@ html, body {
 
 #map {
     width: 78%;
-    height: 100%;
+    height: 90%;
+}
+
+#timeSliderDiv{
+    margin-top: 15px;
+    float: left;
 }
 
 #legendPane {
