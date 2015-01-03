@@ -32,7 +32,6 @@ function makeHttpRequest(url, type,  callback) {
 function initData() {
     var url = "data/bigData.json";
     makeHttpRequest(url, "country", initCoord);
-    console.log(countriesJSON);
 }
 
 function initCoord() {
@@ -53,6 +52,43 @@ function getCountriesNames(countriesJSON) {
 
     console.log(res);
     return res;
+}
+
+function getCountryCoordinates(nameEn) {
+    var i;
+    for (i = 0; i < coordinatesJSON.length; i++) {
+        if (coordinatesJSON[i].taraEN.toUpperCase() === nameEn.toUpperCase()) {
+            return [coordinatesJSON[i].Lat, coordinatesJSON[i].Long];
+        }
+    }
+}
+
+function getCountryColor(virusType) {
+    if (virusType.trim().toUpperCase() === "Ebola virusul Sudan".toUpperCase()) {
+        return colorSudan;
+    } else if (virusType.trim.toUpperCase() === "Ebola virusul Zair".toUpperCase()) {
+        return colorZair;
+    } else if (virusType.trim().toUpperCase() === "Ebola virusul pădurii Taï".toUpperCase()) {
+        return colorTai;
+    } else if (virusType.trim().toUpperCase() === "Ebola virusul Reston".toUpperCase()) {
+        return colorReston;
+    } else if (virusType.trim().toUpperCase() === "Ebola virusul Bundibugyo".toUpperCase()) {
+        return colorBundibugyo;
+    } else {
+        return [0,0,0,1];
+    }
+}
+
+function getBulletSize(mortality) {
+    if (mortality <= 25) {
+        return 5;
+    } else if (mortality <= 50) {
+        return 15;
+    } else if (mortality <= 75) {
+        return 25;
+    } else {
+        return 35;
+    }
 }
 
 initData();

@@ -29,6 +29,8 @@ function initMap() {
         InfoTemplate
         ) {
 
+        console.log(getCountryCoordinates("gabon"));
+
         map = new Map("map",{
             basemap: "oceans",
             center: [0, 37.75],
@@ -60,16 +62,16 @@ function initMap() {
             return markerSymbol;
         }
 
-        function addCountry() {
-            var attributes = {
-                tara: "vlad"
-            };
+        function addCountry(attr) {
             var json = {
                 title:"${tara}",
-                content:" lorem ipsum vla faslkdjsalda "
+                content:"${detalii}"
             }
             var infoTemplate = new InfoTemplate(json);
-            var graphic = new Graphic(new Point(point), createSymbol(colorReston, 5), attributes, infoTemplate);
+            var point = getCountryCoordinates(attr.taraEn);
+            var color = getCountryColor(attr.virus);
+            var size = getBulletSize(attr.mortalitate);
+            var graphic = new Graphic(new Point(point), createSymbol(color, size), attr, infoTemplate);
             map.graphics.add(graphic);
         }
 
