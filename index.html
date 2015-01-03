@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="http://js.arcgis.com/3.11/"></script>
     <script src="scripts/mapFunctions.js"></script>
-
+    <script src="scripts/dataFunctions.js"></script>
 
 </head>
 <body class="claro">
@@ -39,33 +39,65 @@
                         </div>
                         <span class="intervals">Ebola virusul Zair</span>
                     </div>
+                    <div style="padding: 5px" data-dojo-type="dijit/layout/ContentPane"
+                         data-dojo-props="title:'Pane 2'">
+                        <h2>Legenda:</h2>
+                        <h3>Specia de virus Ebola</h3>
+                        <div>
+                            <div>
+                                <div style="background: red" class="circle">
 
-                    <div>
-                        <div style="background: orange" class="circle">
+                                </div>
+                                <span class="intervals">Ebola virusul Zair</span>
+                            </div>
 
+                            <div>
+                                <div style="background: orange" class="circle">
+
+                                </div>
+                                <span class="intervals">Ebola virusul Sudan</span>
+                            </div>
+
+                            <div>
+                                <div style="background: yellow" class="circle">
+
+                                </div>
+                                <span class="intervals">Ebola virusul Reston</span>
+                            </div>
+
+                            <div>
+                                <div style="background: green" class="circle">
+
+                                </div>
+                                <span class="intervals">Ebola virusul pădurii Taï</span>
+                            </div>
+
+                            <div>
+                                <div style="background: #272e80" class="circle">
+
+                                </div>
+                                <span class="intervals">Ebola virusul Bundibugyo</span>
+                            </div>
                         </div>
-                        <span class="intervals">Ebola virusul Sudan</span>
-                    </div>
-
-                    <div>
-                        <div style="background: yellow" class="circle">
-
-                        </div>
-                        <span class="intervals">Ebola virusul Reston</span>
-                    </div>
-
-                    <div>
-                        <div style="background: green" class="circle">
-
-                        </div>
-                        <span class="intervals">Ebola virusul pădurii Taï</span>
-                    </div>
-
-                    <div>
-                        <div style="background: #272e80" class="circle">
-
-                        </div>
-                        <span class="intervals">Ebola virusul Bundibugyo</span>
+                        <h3>Mortalitate %</h3>
+                        <table>
+                            <tr>
+                                <td class="text-center"><div style="background: red; width:5px;height: 5px" class="circle"></div></td>
+                                <td>0-25</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><div style="background: red; width:15px;height: 15px" class="circle"></div></td>
+                                <td>25-50</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><div style="background: red; width:25px;height: 25px" class="circle"></div></td>
+                                <td>50-75</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><div style="background: red; width:35px;height: 35px" class="circle"></div></td>
+                                <td>75-100</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
