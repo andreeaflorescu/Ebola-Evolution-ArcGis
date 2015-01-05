@@ -237,7 +237,7 @@ function initMap() {
                 var color = getCountryColor(typeOfVirus);
                 var bulletSize = getBulletSize(mortality);
                 var graphic = new Graphic(new Point(point), createSymbol(color, bulletSize), attributes, template);
-                graphic.id = year;
+                graphic.id = year + country;
                 map.graphics.add(graphic);
                 graphicArray.push(graphic);
             });
@@ -255,7 +255,7 @@ function initMap() {
             var startYear = new Date("1974");
             var endYear = new Date("1976");
             for(i = 0; i < graphicArray.length; i++){
-                var graphicYear = new Date(graphicArray[i].id);
+                var graphicYear = new Date(graphicArray[i].id.substr(0, 4));
                 if(graphicYear <= endYear && graphicYear >= startYear){
                     console.log(graphicYear);
                     map.graphics.add(graphicArray[i]);
@@ -293,7 +293,7 @@ function initMap() {
                 var endValString = evt.endTime;
                 map.graphics.clear();
                 for(var i = 0; i < graphicArray.length; i++){
-                    var graphicYear = new Date(graphicArray[i].id);
+                    var graphicYear = new Date(graphicArray[i].id.substr(0, 4));
                     if(graphicYear <= endValString && graphicYear >= startValString){
                         map.graphics.add(graphicArray[i]);
                     }
