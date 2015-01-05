@@ -162,7 +162,16 @@ function initMap() {
 
         function initSlider(){
 
-            console.log(featureLayer);
+            map.graphics.clear();
+            var startYear = new Date("1974");
+            var endYear = new Date("1976");
+            for(i = 0; i < graphicArray.length; i++){
+                var graphicYear = new Date(graphicArray[i].id);
+                if(graphicYear <= endYear && graphicYear >= startYear){
+                    console.log(graphicYear);
+                    map.graphics.add(graphicArray[i]);
+                }
+            }
 
             var timeSlider = new TimeSlider({
                 style: "width: 78%;"
@@ -193,13 +202,10 @@ function initMap() {
             timeSlider.on("time-extent-change", function(evt) {
                 var startValString = evt.startTime;
                 var endValString = evt.endTime;
-                console.log(startValString, endValString);
                 map.graphics.clear();
                 for(i = 0; i < graphicArray.length; i++){
                     var graphicYear = new Date(graphicArray[i].id);
-                    console.log(graphicYear);
                     if(graphicYear <= endValString && graphicYear >= startValString){
-                        console.log(graphicYear);
                         map.graphics.add(graphicArray[i]);
                     }
                 }
