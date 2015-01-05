@@ -149,12 +149,10 @@ function initMap() {
                 var infoTemplate = new InfoTemplate(json);
                 var graphic = new Graphic(new Point(point), createSymbol(colorReston, 20), attributes, infoTemplate);
                 graphic.id = year;
-                //features.push(graphic);
                 map.graphics.add(graphic);
                 graphicArray.push(graphic);
             });
 
-            //featureLayer.applyEdits(features, null, null);
             initSlider();
         }
 
