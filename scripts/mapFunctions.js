@@ -8,6 +8,8 @@ var colorSudan = [255, 165, 0, 1];
 var colorTai = [0, 128, 0, 1];
 var colorBundibugyo = [39, 46, 128, 1];
 
+
+
 function initMap() {
     require([
         "esri/map",
@@ -18,7 +20,11 @@ function initMap() {
         "esri/symbols/SimpleMarkerSymbol",
         "esri/graphic",
         "dojo/_base/array",
-        "esri/InfoTemplate"
+        "esri/InfoTemplate",
+        "esri/TimeExtent",
+        "esri/dijit/TimeSlider",
+        "dojo/dom",
+        "dojo/domReady!"
     ], function(
         Map,
         Request,
@@ -28,17 +34,23 @@ function initMap() {
         SimpleMarkerSymbol,
         Graphic,
         arrayUtils,
-        InfoTemplate
+        InfoTemplate,
+        TimeExtent,
+        TimeSlider,
+        dom
         ) {
 
+        //create map
         map = new Map("map",{
             basemap: "oceans",
             center: [0, 37.75],
             zoom: 2
         });
+
         map.on("load", function(){
-            addPoints();
+
         });
+
         map.on("layers-add-result", requestData);
 
         function createSymbol(color, size){
@@ -61,86 +73,127 @@ function initMap() {
             var graphic = new Graphic(new Point(point), createSymbol(color, size), attr, infoTemplate);
             map.graphics.add(graphic);
         }
-    //create empty feature collection
-    var featureCollection = {
-        "layerDefinition": null,
-        "featureSet": {
-            "features": [],
-            "geometryType": "esriGeometryPoint"
+
+        //create empty feature collection
+        var featureCollection = {
+            "layerDefinition": null,
+            "featureSet": {
+                "features": [],
+                "geometryType": "esriGeometryPoint"
+            }
+        };
+
+        //create layer definition
+        featureCollection.layerDefinition = {
+            "geometryType": "esriGeometryPoint",
+            "objectIdField": "ObjectID",
+            "fields": [{
+                "name": "ObjectID",
+                "alias": "ObjectID",
+                "type": "esriFieldTypeOID"
+            }, {
+                "name": "sliderYear",
+                "alias": "sliderYear",
+                "type": "esriFieldTypeString"
+            }
+            ]
+        };
+
+        //create feature layer from feature collection
+        featureLayer = new FeatureLayer(featureCollection, {
+            id: 'myFeatureLayer',
+            mode: FeatureLayer.MODE_ONDEMAND
+        });
+        map.addLayers([featureLayer]);
+
+        function requestData() {
+            var requestHandle = Request({
+                url: "data/geo.json",
+                callbackParamName: "jsoncallback"
+            });
+            requestHandle.then(requestSucceeded, requestFailed);
         }
-    };
 
-    //create layer definition
-    featureCollection.layerDefinition = {
-        "geometryType": "esriGeometryPoint",
-        "objectIdField": "ObjectID",
-        "fields": [{
-            "name": "ObjectID",
-            "alias": "ObjectID",
-            "type": "esriFieldTypeOID"
-        }, {
-            "name": "some_other_field",
-            "alias": "some_other_field",
-            "type": "esriFieldTypeString"
-        }
-        ]
-    };
+        function requestSucceeded(response, io) {
+            //loop through the items and add to the feature layer
 
-    //create feature layer from feature collection
-    featureLayer = new FeatureLayer(featureCollection, {
-        id: 'myFeatureLayer',
-        mode: FeatureLayer.MODE_SNAPSHOT
-    });
-    map.addLayers([featureLayer]);
+            var features = [];
+            arrayUtils.forEach(response.features, function(item) {
 
-        function addPoints() {
-            var points = [[19.82,41.33],[16.37,48.21],[18.38,43.85],[23.32,42.7],[16,45.8],[19.08,47.5],[12.48,41.9],[21.17,42.67],[21.43,42],[19.26,42.44],[26.1,44.43],[12.45,43.93],[20.47,44.82],[17.12,48.15],[14.51,46.06],[12.45,41.9]];
-            arrayUtils.forEach(points, function(point) {
+                var point = new Point(item.geometry.coordinates[0], item.geometry.coordinates[1]);
+                var country = item.properties.taraRO;
+                var year = item.properties.an;
+                var details = item.properties.Detalii;
+                var nrOfCases = item.properties.nrCazuri;
+                var nrOfDeaths = item.properties.nrDecese;
+                var mortality = item.properties.mortalitate;
+                var typeOfVirus = item.properties.virus;
 
                 var attributes = {
-                    tara: "vlad"
+                    tara: country,
+                    an: year,
+                    nrCazuri: nrOfCases,
+                    nrDecese: nrOfDeaths,
+                    mortalitate: mortality,
+                    detalii: details
                 };
                 var json = {
                     title:"${tara}",
-                    content:" lorem ipsum vla faslkdjsalda "
+                    content:"<b>An: </b>${an} <br>" +
+                            "<b>Numar de cazuri:</b> ${nrCazuri} <br>" +
+                            "<b>Numar de decese:</b> ${nrDecese} <br>" +
+                            "<b>Mortalitate:</b> ${mortalitate}% <br>" +
+                            "<b>Detalii:</b> ${detalii}<br>"
                 }
                 var infoTemplate = new InfoTemplate(json);
-                var graphic = new Graphic(new Point(point), createSymbol(colorReston, 5), attributes, infoTemplate);
-                map.graphics.add(graphic);
+                var graphic = new Graphic(new Point(point), createSymbol(colorReston, 20), attributes, infoTemplate);
+                graphic.id = year;
+                features.push(graphic);
             });
 
-            var gr = new Graphic(new Point([-98.499998910999693, 39.759997789000465]), createSymbol(colorSudan, 15));
-            map.graphics.add(gr);
+            featureLayer.applyEdits(features, null, null);
+            initSlider();
         }
-    });
 
-    function requestData() {
-        var requestHandle = Request({
-            url: "data/geoJson.json",
-            callbackParamName: "jsoncallback"
-        });
-        requestHandle.then(requestSucceeded, requestFailed);
+        function requestFailed(error) {
+            console.log('failed');
+        }
+
+        function initSlider(){
+
+            console.log(featureLayer);
+
+            var timeSlider = new TimeSlider({
+                style: "width: 78%;"
+            }, dom.byId("timeSliderDiv"));
+            map.setTimeSlider(timeSlider);
+
+            var timeExtent = new TimeExtent();
+            timeExtent.startTime = new Date("1/1/1974 UTC");
+            timeExtent.endTime = new Date("1/1/2014 UTC");
+            timeSlider.setThumbCount(2);
+
+            timeSlider.createTimeStopsByTimeInterval(timeExtent, 2, "esriTimeUnitsYears");
+            timeSlider.setThumbIndexes([0,1]);
+            timeSlider.setThumbMovingRate(2000);
+            timeSlider.startup();
+
+            //add labels for every other time stop
+            var labels = arrayUtils.map(timeSlider.timeStops, function(timeStop, i) {
+                if ( i % 2 === 0 ) {
+                    return timeStop.getUTCFullYear();
+                } else {
+                    return "";
+                }
+            });
+
+            timeSlider.setLabels(labels);
+
+            timeSlider.on("time-extent-change", function(evt) {
+                var startValString = evt.startTime;
+                var endValString = evt.endTime;
+
+            });
+        }
     }
-
-    function requestSucceeded(response, io) {
-        //loop through the items and add to the feature layer
-        var features = [];
-        arrayUtils.forEach(response.features, function(item) {
-            var attr = {};
-            //pull in any additional attributes if required
-            //attr["some_other_field"] = item.properties.<some_chosen_field>;
-
-            var geometry = new Point(item.geometry.coordinates[0], item.geometry.coordinates[1]);
-            console.log(item.geometry.coordinates[0], item.geometry.coordinates[1]);
-            var graphic = new Graphic(geometry);
-            //graphic.setAttributes(attr);
-            features.push(graphic);
-        });
-
-        featureLayer.applyEdits(features, null, null);
-    }
-
-    function requestFailed(error) {
-        console.log('failed');
-    }
-}
+    )};

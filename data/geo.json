@@ -5,20 +5,70 @@
             "type": "Feature",
             "geometry": {
                 "type": "Point",
-                "coordinates": [102.0, 0.6]
+                "coordinates": [24.99999949, -3.19]
             },
             "properties": {
-                "prop0": "Country1"
+                "an":"1976",
+                "taraEN":"Democratic Republic of Congo",
+                "taraRO":"Zair (Republica Democrată Congo)",
+                "virus":"Ebola virusul Zair",
+                "nrCazuri":318,
+                "nrDecese":280,
+                "mortalitate":88,
+                "Detalii":"Epidemie În Yambuku și zona înconjurătoare. Boala a fost răspândită prin contact personal apropiat și prin utilizarea de ace și seringi contaminate în spitale sau clinici. Acestă epidemie a fost primul caz a febrei hemoragice Ebola."
+        }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [29.9999962, 7.499998618]
+            },
+            "properties": {
+                "an":"1976",
+                "taraEN":"south sudan",
+                "taraRO":"Sudan (Sudanul de Sud)",
+                "virus":"Ebola virusul Sudan",
+                "nrCazuri":284,
+                "nrDecese":151,
+                "mortalitate":53,
+                "Detalii":"Epidemie în Nzara, Maridi și zona  înconjurătoare. Boala a fost răspândită în principal prin contact personal apropiat în spitale. Majoritatea personalului medical a fost infectat."
+
             }
         },
         {
             "type": "Feature",
             "geometry": {
                 "type": "Point",
-                "coordinates": [-3.99999853, 39.99999749]
+                "coordinates": [-2.695307832, 54.75843556]
             },
             "properties": {
-                "prop0": "Country2"
+                "an":"1976",
+                "taraEN":"great britain",
+                "taraRO":"Marea Britanie",
+                "virus":"Ebola virusul Sudan",
+                "nrCazuri":1,
+                "nrDecese":0,
+                "mortalitate":0,
+                "Detalii":"Infecție de laborator prin  înțepătură accidentală cu un ac contaminat."
+
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [24.99999949, -3.19]
+            },
+            "properties": {
+                "an":"1977",
+                "taraEN":"Democratic Republic of Congo",
+                "taraRO":"Zair (Republica Democrată Congo)",
+                "virus":"Ebola virusul Zair",
+                "nrCazuri":1,
+                "nrDecese":1,
+                "mortalitate":100,
+                "Detalii":"Confirmare retrospectivă a unui caz în satul Tandala. "
             }
         },
         {
@@ -28,7 +78,149 @@
                 "coordinates": [29.9999962, 7.499998618]
             },
             "properties": {
-                "prop0": "Country3"
+                "an":"1979",
+                "taraEN":"south sudan",
+                "taraRO":"Sudan (Sudanul de Sud)",
+                "virus":"Ebola virusul Sudan",
+                "nrCazuri":34,
+                "nrDecese":22,
+                "mortalitate":65,
+                "Detalii":"Focar în Nzara, Maridi. A fost un focar recurent în același loc ca și în 1976 a epidemiei din Sudan"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [121.999996, 12.99999995]
+            },
+            "properties": {
+                "an":"1990",
+                "taraEN":"Philippines",
+                "taraRO":"Filipine",
+                "virus":"Ebola virusul Reston",
+                "nrCazuri":3,
+                "nrDecese":0,
+                "mortalitate":0,
+                "Detalii":"Mortalitate ridicată în rândul macacilor cynomolgus în unitățile de  export a primatelor pentru SUA. La 3 muncitori din aceste unități au apărut anticorpi, dar ei nu s-au îmbolnăvit."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-98.49999891, 39.75999779]
+            },
+            "properties": {
+                "an":"1990",
+                "taraEN":"s.u.a",
+                "taraRO":"S.U.A",
+                "virus":"Ebola virusul Reston",
+                "nrCazuri":4,
+                "nrDecese":0,
+                "mortalitate":0,
+                "Detalii":"Virusul Ebola Reston a fost  identificat din nou la maimuțele importate din Filipine și au fost luate măsuri de carantină în Virginia și Texas. La 4 oameni au apărut anticorpi, dar ei nu s-au îmbolnăvit."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [12.83332688, 42.83332851]
+            },
+            "properties": {
+                "an":"1992",
+                "taraEN":"Italy",
+                "taraRO":"Italia",
+                "virus":"Ebola virusul Reston",
+                "nrCazuri":0,
+                "nrDecese":0,
+                "mortalitate":0,
+                "Detalii":"Virusul Ebola Reston a fost identificat în Sienna la maimuțele importate din aceleași unități de export din Filipine, care au fost implicate în episoadele din Statele Unite și a fost instituită carantina. Oamenii nu s-au infectat."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [11.74999853, -0.99999894]
+            },
+            "properties": {
+                "an":"1994",
+                "taraEN":"gabon",
+                "taraRO":"Gabon",
+                "virus":"Ebola virusul Zair",
+                "nrCazuri":52,
+                "nrDecese":31,
+                "mortalitate":60,
+                "Detalii":"Focar în Mékouka și alte locuri de extracție de aur aflate în mijlocul pădurilor tropicale. Inițial a fost considerată că este febra galbenă; dar în 1995 a fost identificată ca fiind febra hemoragică Ebola."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-4.999998772, 7.999998739]
+            },
+            "properties": {
+                "an":"1994",
+                "taraEN":"cote d'ivoire",
+                "taraRO":"Coasta de Fildes",
+                "virus":"Ebola virusul pădurii Taï",
+                "nrCazuri":1,
+                "nrDecese":0,
+                "mortalitate":0,
+                "Detalii":"Un om de știință s-a îmbolnăvit după efectuarea autopsiei unui cimpanzeu sălbatic în pădurea Taï. Pacientul a fost tratat în Elveția."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [24.99999949, -3.19]
+            },
+            "properties": {
+                "an":"1995",
+                "taraEN":"Democratic Republic of Congo",
+                "taraRO":"Zair (Republica Democrata Congo)",
+                "virus":"Ebola virusul Zair",
+                "nrCazuri":315,
+                "nrDecese":250,
+                "mortalitate":81,
+                "Detalii":"Epidemie în Kikwit și zona înconjurătoare. Sursa a fost un pacient care a lucrat în pădurea învecinată orașului. Epidemia s-a răspândit în familii și spitale."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [11.74999853, -0.99999894]
+            },
+            "properties": {
+                "an":"1996",
+                "taraEN":"gabon",
+                "taraRO":"Gabon",
+                "virus":"Ebola virusul Zair",
+                "nrCazuri":37,"nrDecese":21,
+                "mortalitate":57,
+                "Detalii":"Focar în zona Mayibout. Un cimpanzeu găsit mort în pădure a fost mâncat de oameni care vânau animale. 19 persoane care au fost implicate în măcelăritul animalului s-au îmbolnăvit; alte cazuri a avut loc la membrii familiilor."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [11.74999853, -0.99999894]
+            },
+            "properties": {
+                "an":"1997",
+                "taraEN":"gabon",
+                "taraRO":"Gabon",
+                "virus":"Ebola virusul Zair",
+                "nrCazuri":60,
+                "nrDecese":45,
+                "mortalitate":74,
+                "Detalii":"Focar în zona Booué, pacienții au fost transportați în Libreville. Primului caz a fost un vânător care a trăit într-o tabără de pădure. Boala s-a răspândit prin contactul apropiat cu persoanele infectate. Un cimpanzeu mort a fost găsit în pădure și a fost stabilit că era infectat."
             }
         }
     ]
