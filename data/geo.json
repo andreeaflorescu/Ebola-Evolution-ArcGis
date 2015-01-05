@@ -222,6 +222,23 @@
                 "mortalitate":74,
                 "Detalii":"Focar în zona Booué, pacienții au fost transportați în Libreville. Primului caz a fost un vânător care a trăit într-o tabără de pădure. Boala s-a răspândit prin contactul apropiat cu persoanele infectate. Un cimpanzeu mort a fost găsit în pădure și a fost stabilit că era infectat."
             }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [23.99999925, -28.99999672]
+            },
+            "properties": {
+                "an":"1996",
+                "taraEN":"south africa",
+                "taraRO":"Africa de Sud",
+                "virus":"Ebola virusul Zair",
+                "nrCazuri":2,
+                "nrDecese":1,
+                "mortalitate":50,
+                "Detalii":"Un profesionist medical a călătorit din Gabon în Johannesburg, Africa de Sud, după ce a tratat pacienți infectați cu virusul Ebola și, astfel, a fost expus la virus. El a fost internat într-un spital, iar o asistenta medicală care a avut grijă de el s-a infectat și a murit "
+}
         }
     ]
 }
