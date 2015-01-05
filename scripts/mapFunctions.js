@@ -2,11 +2,11 @@
  * Created by Cristina on 12/30/14.
  */
 var map;
-var colorZair = [255,0,0,1];
-var colorReston = [255, 255, 0, 1];
-var colorSudan = [255, 165, 0, 1];
-var colorTai = [0, 128, 0, 1];
-var colorBundibugyo = [39, 46, 128, 1];
+var colorZair = [255,0,0,0.5];
+var colorReston = [255, 255, 0, 0.75];
+var colorSudan = [255, 165, 0, 0.75];
+var colorTai = [0, 128, 0, 0.75];
+var colorBundibugyo = [39, 46, 128, 0.75];
 
 var graphicArray = [];
 
@@ -25,6 +25,18 @@ function initMap() {
         "esri/TimeExtent",
         "esri/dijit/TimeSlider",
         "dojo/dom",
+        "esri/dijit/InfoWindow",
+        "dijit/layout/TabContainer",
+        "dojo/dom-construct",
+        "dijit/layout/ContentPane",
+        "dojo/dom-class",
+        "dojox/charting/Chart2D",
+        "dojox/charting/plot2d/Pie",
+        "dojox/charting/action2d/Highlight",
+        "dojox/charting/action2d/MoveSlice",
+        "dojox/charting/action2d/Tooltip",
+        "dojo/number",
+        "dojox/charting/themes/Wetland",
         "dojo/domReady!"
     ], function(
         Map,
@@ -38,15 +50,32 @@ function initMap() {
         InfoTemplate,
         TimeExtent,
         TimeSlider,
-        dom
+        dom,
+        InfoWindow,
+        TabContainer,
+        domConstruct,
+        ContentPane,
+        domClass,
+        Chart2D,
+        Pie,
+        Highlight, MoveSlice, Tooltip,
+        number,
+        dojoxTheme
         ) {
+
+        // Use the info window instead of the popup.
+        var infoWindow = new InfoWindow(null, domConstruct.create("div"));
+        infoWindow.startup();
 
         //create map
         map = new Map("map",{
             basemap: "oceans",
             center: [0, 37.75],
+            infoWindow: infoWindow,
             zoom: 2
         });
+
+        map.infoWindow.resize(275, 275);
 
         map.on("load", function(){
 
@@ -62,17 +91,71 @@ function initMap() {
             return markerSymbol;
         }
 
-        function addCountry(attr) {
-            var json = {
-                title:"${tara}",
-                content:"${detalii}"
-            }
-            var infoTemplate = new InfoTemplate(json);
-            var point = getCountryCoordinates(attr.taraEn);
-            var color = getCountryColor(attr.virus);
-            var size = getBulletSize(attr.mortalitate);
-            var graphic = new Graphic(new Point(point), createSymbol(color, size), attr, infoTemplate);
-            map.graphics.add(graphic);
+        function getWindowContent(graphic) {
+            // Make a tab container.
+            console.log("pe aici");
+            var tc = new TabContainer({
+                style: "width:100%;height:100%;"
+            }, domConstruct.create("div"));
+
+            // Display attribute information.
+            var cp1 = new ContentPane({
+                title: "Detalii",
+                content: "<b>An: </b>" + graphic.attributes.an +  "<br>" +
+                    "<b>Numar de cazuri:</b>" + graphic.attributes.nrCazuri +" <br>" +
+                    "<b>Numar de decese:</b>" +graphic.attributes.nrDecese + "<br>" +
+                    "<b>Mortalitate:</b>" + graphic.attributes.mortalitate + "%<br>" +
+                    "<b>Detalii:</b>" + graphic.attributes.detalii +"<br>"
+            });
+            // Display a dojo pie chart for the male/female percentage.
+            var cp2 = new ContentPane({
+                title: "Grafic Mortalitate"
+            });
+            tc.addChild(cp1);
+            tc.addChild(cp2);
+
+            // Create the chart that will display in the second tab.
+            var c = domConstruct.create("div", {
+                id: "demoChart"
+            }, domConstruct.create("div"));
+            var chart = new Chart2D(c);
+            domClass.add(chart, "chart");
+
+            // Apply a color theme to the chart.
+            chart.setTheme(dojoxTheme);
+            chart.addPlot("default", {
+                type: "Pie",
+                radius: 70,
+                htmlLabels: true
+            });
+            tc.watch("selectedChildWidget", function(name, oldVal, newVal){
+                if ( newVal.title === "Grafic Mortalitate" ) {
+                    chart.resize(180,180);
+                }
+            });
+
+            // Calculate percent male/female.
+            var total = parseInt(graphic.attributes.nrCazuri);
+            var decese = parseInt(graphic.attributes.nrDecese);
+            var vindecari = total - decese;
+            chart.addSeries("PopulationSplit", [{
+                y: decese,
+                tooltip: decese,
+                text: "Decese"
+            },
+                {
+                    y: vindecari,
+                    tooltip: vindecari,
+                    text: "Vindecari"
+                }
+            ]);
+            //highlight the chart and display tooltips when you mouse over a slice.
+            new Highlight(chart, "default");
+            new Tooltip(chart, "default");
+            new MoveSlice(chart, "default");
+
+            cp2.set("content", chart.node);
+            return tc.domNode;
         }
 
         //create empty feature collection
@@ -146,10 +229,15 @@ function initMap() {
                             "<b>Mortalitate:</b> ${mortalitate}% <br>" +
                             "<b>Detalii:</b> ${detalii}<br>"
                 }
-                var infoTemplate = new InfoTemplate(json);
-                var graphic = new Graphic(new Point(point), createSymbol(colorReston, 20), attributes, infoTemplate);
+//                var infoTemplate = new InfoTemplate(json);
+                var template = new InfoTemplate();
+                // Flag icons are from http://twitter.com/thefella, released under creative commons.
+                template.setTitle("<b>${tara}</b>");
+                template.setContent(getWindowContent);
+                var color = getCountryColor(typeOfVirus);
+                var bulletSize = getBulletSize(mortality);
+                var graphic = new Graphic(new Point(point), createSymbol(color, bulletSize), attributes, template);
                 graphic.id = year;
-                //features.push(graphic);
                 map.graphics.add(graphic);
                 graphicArray.push(graphic);
             });
@@ -197,7 +285,7 @@ function initMap() {
                 var endValString = evt.endTime;
                 console.log(startValString, endValString);
                 map.graphics.clear();
-                for(i = 0; i < graphicArray.length; i++){
+                for(var i = 0; i < graphicArray.length; i++){
                     var graphicYear = new Date(graphicArray[i].id);
                     console.log(graphicYear);
                     if(graphicYear <= endValString && graphicYear >= startValString){

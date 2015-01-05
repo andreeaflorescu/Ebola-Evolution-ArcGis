@@ -66,7 +66,7 @@ function getCountryCoordinates(nameEn) {
 function getCountryColor(virusType) {
     if (virusType.trim().toUpperCase() === "Ebola virusul Sudan".toUpperCase()) {
         return colorSudan;
-    } else if (virusType.trim.toUpperCase() === "Ebola virusul Zair".toUpperCase()) {
+    } else if (virusType.trim().toUpperCase() === "Ebola virusul Zair".toUpperCase()) {
         return colorZair;
     } else if (virusType.trim().toUpperCase() === "Ebola virusul pădurii Taï".toUpperCase()) {
         return colorTai;
@@ -81,13 +81,13 @@ function getCountryColor(virusType) {
 
 function getBulletSize(mortality) {
     if (mortality <= 25) {
-        return 5;
-    } else if (mortality <= 50) {
         return 15;
-    } else if (mortality <= 75) {
+    } else if (mortality <= 50) {
         return 25;
-    } else {
+    } else if (mortality <= 75) {
         return 35;
+    } else {
+        return 45;
     }
 }
 
