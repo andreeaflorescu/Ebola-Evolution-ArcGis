@@ -8,6 +8,7 @@ var colorSudan = [255, 165, 0, 1];
 var colorTai = [0, 128, 0, 1];
 var colorBundibugyo = [39, 46, 128, 1];
 
+var graphicArray = [];
 
 
 function initMap() {
@@ -148,10 +149,12 @@ function initMap() {
                 var infoTemplate = new InfoTemplate(json);
                 var graphic = new Graphic(new Point(point), createSymbol(colorReston, 20), attributes, infoTemplate);
                 graphic.id = year;
-                features.push(graphic);
+                //features.push(graphic);
+                map.graphics.add(graphic);
+                graphicArray.push(graphic);
             });
 
-            featureLayer.applyEdits(features, null, null);
+            //featureLayer.applyEdits(features, null, null);
             initSlider();
         }
 
@@ -192,7 +195,16 @@ function initMap() {
             timeSlider.on("time-extent-change", function(evt) {
                 var startValString = evt.startTime;
                 var endValString = evt.endTime;
-
+                console.log(startValString, endValString);
+                map.graphics.clear();
+                for(i = 0; i < graphicArray.length; i++){
+                    var graphicYear = new Date(graphicArray[i].id);
+                    console.log(graphicYear);
+                    if(graphicYear <= endValString && graphicYear >= startValString){
+                        console.log(graphicYear);
+                        map.graphics.add(graphicArray[i]);
+                    }
+                }
             });
         }
     }
