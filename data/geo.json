@@ -10,7 +10,7 @@
             "properties": {
                 "an":"1976",
                 "taraEN":"Democratic Republic of Congo",
-                "taraRO":"Zair (Republica Democrată Congo)",
+                "taraRO":"Republica Democrata Congo",
                 "virus":"Ebola virusul Zair",
                 "nrCazuri":318,
                 "nrDecese":280,
@@ -63,7 +63,7 @@
             "properties": {
                 "an":"1977",
                 "taraEN":"Democratic Republic of Congo",
-                "taraRO":"Zair (Republica Democrată Congo)",
+                "taraRO":"Republica Democrata Congo",
                 "virus":"Ebola virusul Zair",
                 "nrCazuri":1,
                 "nrDecese":1,
@@ -182,7 +182,7 @@
             "properties": {
                 "an":"1995",
                 "taraEN":"Democratic Republic of Congo",
-                "taraRO":"Zair (Republica Democrata Congo)",
+                "taraRO":"Republica Democrata Congo",
                 "virus":"Ebola virusul Zair",
                 "nrCazuri":315,
                 "nrDecese":250,
@@ -249,7 +249,7 @@
             "properties": {
                 "an":"1996",
                 "taraEN":"s.u.a",
-                "taraRO":"SUA",
+                "taraRO":"S.U.A",
                 "virus":"Ebola virusul Reston",
                 "nrCazuri":0,
                 "nrDecese":0,
@@ -317,7 +317,7 @@
             "properties": {
                 "an":"2002",
                 "taraEN":"Democratic Republic of Congo",
-                "taraRO":"Republica Congo",
+                "taraRO":"Republica Democrata Congo",
                 "virus":"Ebola virusul Zair",
                 "nrCazuri":57,
                 "nrDecese":43,
@@ -334,7 +334,7 @@
             "properties": {
                 "an":"2003",
                 "taraEN":"Democratic Republic of Congo",
-                "taraRO":"Republica Congo",
+                "taraRO":"Republica Democrata Congo",
                 "virus":"Ebola virusul Zair",
                 "nrCazuri":143,
                 "nrDecese":128,
@@ -351,7 +351,7 @@
             "properties": {
                 "an":"2003",
                 "taraEN":"Democratic Republic of Congo",
-                "taraRO":"Republica Congo",
+                "taraRO":"Republica Democrata Congo",
                 "virus":"Ebola virusul Zair",
                 "nrCazuri":35,
                 "nrDecese":29,
@@ -368,7 +368,7 @@
             "properties": {
                 "an":"2004",
                 "taraEN":"south sudan",
-                "taraRO":"Sudan (Sudanul de Sud) ",
+                "taraRO":"Sudan (Sudanul de Sud)",
                 "virus":"Ebola virusul Sudan",
                 "nrCazuri":17,
                 "nrDecese":7,
@@ -402,7 +402,7 @@
             "properties": {
                 "an":"2007",
                 "taraEN":"Democratic Republic of Congo",
-                "taraRO":"Republica Democrată Congo",
+                "taraRO":"Republica Democrata Congo",
                 "virus":"Ebola virusul Zair ",
                 "nrCazuri":264,
                 "nrDecese":187,
@@ -419,7 +419,7 @@
             "properties": {
                 "an":"2008",
                 "taraEN":"uganda",
-                "taraRO":"Uganda ",
+                "taraRO":"Uganda",
                 "virus":"Ebola virusul Bundibugyo",
                 "nrCazuri":149,
                 "nrDecese":37,
@@ -436,7 +436,7 @@
             "properties": {
                 "an":"2008",
                 "taraEN":"Philippines",
-                "taraRO":"Filipine ",
+                "taraRO":"Filipine",
                 "virus":"Ebola virusul Reston",
                 "nrCazuri":6,
                 "nrDecese":0,
@@ -453,7 +453,7 @@
             "properties": {
                 "an":"2009",
                 "taraEN":"Democratic Republic of Congo",
-                "taraRO":"Republica Democrată Congo",
+                "taraRO":"Republica Democrata Congo",
                 "virus":"Ebola virusul Zair",
                 "nrCazuri":32,
                 "nrDecese":15,
@@ -504,7 +504,7 @@
             "properties": {
                 "an":"2012",
                 "taraEN":"Democratic Republic of Congo",
-                "taraRO":"Republica Democrată Congo",
+                "taraRO":"Republica Democrata Congo",
                 "virus":"Ebola virusul Bundibugyo",
                 "nrCazuri":36,
                 "nrDecese":13,
@@ -623,7 +623,7 @@
             "properties": {
                 "an":"2014",
                 "taraEN":"SUA",
-                "taraRO":"SUA",
+                "taraRO":"S.U.A",
                 "virus":"Ebola virusul Zair  ",
                 "nrCazuri":3,
                 "nrDecese":1,

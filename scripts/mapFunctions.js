@@ -9,7 +9,8 @@ var colorTai = [0, 128, 0, 0.75];
 var colorBundibugyo = [39, 46, 128, 0.75];
 
 var graphicArray = [];
-
+var plotJson = {};
+var yearsArray = [];
 
 function initMap() {
     require([
@@ -32,6 +33,8 @@ function initMap() {
         "dojo/dom-class",
         "dojox/charting/Chart2D",
         "dojox/charting/plot2d/Pie",
+        "dojox/charting/plot2d/Lines",
+        "dojox/charting/axis2d/Default",
         "dojox/charting/action2d/Highlight",
         "dojox/charting/action2d/MoveSlice",
         "dojox/charting/action2d/Tooltip",
@@ -58,6 +61,8 @@ function initMap() {
         domClass,
         Chart2D,
         Pie,
+        Lines,
+        Default,
         Highlight, MoveSlice, Tooltip,
         number,
         dojoxTheme
@@ -78,7 +83,9 @@ function initMap() {
         map.infoWindow.resize(275, 275);
 
         map.on("load", function(){
-
+            for(var i = 1974; i <= 2014; i++){
+                yearsArray.push({"x": i, "y": 0});
+            }
         });
 
         map.on("layers-add-result", requestData);
@@ -91,12 +98,15 @@ function initMap() {
             return markerSymbol;
         }
 
+
+
         function getWindowContent(graphic) {
             // Make a tab container.
-            console.log("pe aici");
             var tc = new TabContainer({
                 style: "width:100%;height:100%;"
             }, domConstruct.create("div"));
+
+            var plotButton = '<button onclick="createPopupChart" id="' + graphic.attributes.tara + '">Vezi situatia pe ani</button>'
 
             // Display attribute information.
             var cp1 = new ContentPane({
@@ -105,14 +115,44 @@ function initMap() {
                     "<b>Numar de cazuri:</b>" + graphic.attributes.nrCazuri +" <br>" +
                     "<b>Numar de decese:</b>" +graphic.attributes.nrDecese + "<br>" +
                     "<b>Mortalitate:</b>" + graphic.attributes.mortalitate + "%<br>" +
-                    "<b>Detalii:</b>" + graphic.attributes.detalii +"<br>"
+                    "<b>Detalii:</b>" + graphic.attributes.detalii +"<br>" +
+                    plotButton
             });
-            // Display a dojo pie chart for the male/female percentage.
+            // Display a dojo pie chart for the deaths/cures percentage.
             var cp2 = new ContentPane({
                 title: "Grafic Mortalitate"
             });
+
+            var cp3 = new ContentPane({
+                title: "Situatia pe ani"
+            });
+
             tc.addChild(cp1);
             tc.addChild(cp2);
+            tc.addChild(cp3);
+
+            //create the chart that will display in the third tab
+            var columnChart = domConstruct.create("div", {
+                id: "columnChart"
+            }, domConstruct.create("div"));
+            var secondChart = new Chart2D(columnChart);
+            domClass.add(secondChart, "secondChart");
+
+            // Apply a color theme to the chart.
+            secondChart.setTheme(dojoxTheme);
+
+            tc.watch("selectedChildWidget", function(name, oldVal, newVal){
+                if ( newVal.title === "Situatia pe ani" ) {
+                    secondChart.resize(180,180);
+                }
+            });
+
+            secondChart.addPlot("default", {type: Lines, markers: true});
+            secondChart.addAxis("x", {title: "Ani", titleOrientation: "away"});
+            secondChart.addAxis("y", {vertical: true, title:"Decese"});
+            secondChart.addSeries("Series", plotJson[graphic.attributes.tara]);
+
+            cp3.set("content", secondChart.node);
 
             // Create the chart that will display in the second tab.
             var c = domConstruct.create("div", {
@@ -134,7 +174,7 @@ function initMap() {
                 }
             });
 
-            // Calculate percent male/female.
+            // Calculate percent deaths/cures.
             var total = parseInt(graphic.attributes.nrCazuri);
             var decese = parseInt(graphic.attributes.nrDecese);
             var vindecari = total - decese;
@@ -156,6 +196,10 @@ function initMap() {
 
             cp2.set("content", chart.node);
             return tc.domNode;
+        }
+
+        createPopupChart = function(){
+            console.log("log");
         }
 
         //create empty feature collection
@@ -227,11 +271,11 @@ function initMap() {
                             "<b>Numar de cazuri:</b> ${nrCazuri} <br>" +
                             "<b>Numar de decese:</b> ${nrDecese} <br>" +
                             "<b>Mortalitate:</b> ${mortalitate}% <br>" +
-                            "<b>Detalii:</b> ${detalii}<br>"
+                            "<b>Detalii:</b> ${detalii}<br>" +
+                            "<button>Vezi situatia pe ani</button>"
                 }
-//                var infoTemplate = new InfoTemplate(json);
+
                 var template = new InfoTemplate();
-                // Flag icons are from http://twitter.com/thefella, released under creative commons.
                 template.setTitle("<b>${tara}</b>");
                 template.setContent(getWindowContent);
                 var color = getCountryColor(typeOfVirus);
@@ -240,6 +284,20 @@ function initMap() {
                 graphic.id = year + country;
                 map.graphics.add(graphic);
                 graphicArray.push(graphic);
+
+                var currentYear = parseInt(year);
+                var tempYears = [];
+                if(plotJson[country] == undefined){
+                    tempYears = yearsArray.slice();
+                    tempYears[currentYear - 1974] = {"x": currentYear, "y": nrOfDeaths};
+                    plotJson[country] = tempYears;
+                }
+                else{
+                    tempYears = plotJson[country].slice();
+                    tempYears[currentYear - 1974] = {"x": currentYear, "y": nrOfDeaths};
+                    plotJson[country] = tempYears;
+                }
+
             });
 
             initSlider();
@@ -257,7 +315,6 @@ function initMap() {
             for(i = 0; i < graphicArray.length; i++){
                 var graphicYear = new Date(graphicArray[i].id.substr(0, 4));
                 if(graphicYear <= endYear && graphicYear >= startYear){
-                    console.log(graphicYear);
                     map.graphics.add(graphicArray[i]);
                 }
             }
