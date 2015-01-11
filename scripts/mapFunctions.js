@@ -72,6 +72,8 @@ function initMap() {
         var infoWindow = new InfoWindow(null, domConstruct.create("div"));
         infoWindow.startup();
 
+
+
         //create map
         map = new Map("map",{
             basemap: "oceans",
@@ -81,6 +83,10 @@ function initMap() {
         });
 
         map.infoWindow.resize(275, 275);
+
+        dojo.connect(map.infoWindow._hide, "onclick", function(){
+            map.infoWindow.resize(275, 275);
+        });
 
         map.on("load", function(){
             for(var i = 1974; i <= 2014; i++){
@@ -106,8 +112,6 @@ function initMap() {
                 style: "width:100%;height:100%;"
             }, domConstruct.create("div"));
 
-            var plotButton = '<button onclick="createPopupChart" id="' + graphic.attributes.tara + '">Vezi situatia pe ani</button>'
-
             // Display attribute information.
             var cp1 = new ContentPane({
                 title: "Detalii",
@@ -115,9 +119,17 @@ function initMap() {
                     "<b>Numar de cazuri:</b>" + graphic.attributes.nrCazuri +" <br>" +
                     "<b>Numar de decese:</b>" +graphic.attributes.nrDecese + "<br>" +
                     "<b>Mortalitate:</b>" + graphic.attributes.mortalitate + "%<br>" +
-                    "<b>Detalii:</b>" + graphic.attributes.detalii +"<br>" +
-                    plotButton
+                    "<b>Detalii:</b>" + graphic.attributes.detalii +"<br>"
             });
+
+            tc.watch("selectedChildWidget", function(name, oldVal, newVal){
+                if ( newVal.title === "Detalii" ) {
+                    infoWindow.resize(275, 275);
+                    tc.resize();
+                    chart.resize(180,180);
+                }
+            });
+
             // Display a dojo pie chart for the deaths/cures percentage.
             var cp2 = new ContentPane({
                 title: "Grafic Mortalitate"
@@ -143,7 +155,9 @@ function initMap() {
 
             tc.watch("selectedChildWidget", function(name, oldVal, newVal){
                 if ( newVal.title === "Situatia pe ani" ) {
-                    secondChart.resize(180,180);
+                    infoWindow.resize(500, 350);
+                    tc.resize();
+                    secondChart.resize(450, 250);
                 }
             });
 
@@ -170,6 +184,8 @@ function initMap() {
             });
             tc.watch("selectedChildWidget", function(name, oldVal, newVal){
                 if ( newVal.title === "Grafic Mortalitate" ) {
+                    infoWindow.resize(275, 275);
+                    tc.resize();
                     chart.resize(180,180);
                 }
             });
@@ -196,10 +212,6 @@ function initMap() {
 
             cp2.set("content", chart.node);
             return tc.domNode;
-        }
-
-        createPopupChart = function(){
-            console.log("log");
         }
 
         //create empty feature collection
