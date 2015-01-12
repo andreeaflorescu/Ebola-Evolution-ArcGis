@@ -10,6 +10,8 @@ var colorBundibugyo = [39, 46, 128, 0.75];
 
 var graphicArray = [];
 var plotJson = {};
+var plotJsonDeaths = {};
+var plotJsonCases = {};
 var yearsArray = [];
 
 function initMap() {
@@ -17,7 +19,6 @@ function initMap() {
         "esri/map",
         "esri/request",
         "esri/layers/FeatureLayer",
-        "esri/dijit/Legend",
         "esri/geometry/Point",
         "esri/symbols/SimpleMarkerSymbol",
         "esri/graphic",
@@ -40,12 +41,12 @@ function initMap() {
         "dojox/charting/action2d/Tooltip",
         "dojo/number",
         "dojox/charting/themes/Wetland",
+        "dojox/charting/widget/Legend",
         "dojo/domReady!"
     ], function(
         Map,
         Request,
         FeatureLayer,
-        Legend,
         Point,
         SimpleMarkerSymbol,
         Graphic,
@@ -65,7 +66,8 @@ function initMap() {
         Default,
         Highlight, MoveSlice, Tooltip,
         number,
-        dojoxTheme
+        dojoxTheme,
+        Legend
         ) {
 
         // Use the info window instead of the popup.
@@ -147,6 +149,7 @@ function initMap() {
             var columnChart = domConstruct.create("div", {
                 id: "columnChart"
             }, domConstruct.create("div"));
+
             var secondChart = new Chart2D(columnChart);
             domClass.add(secondChart, "secondChart");
 
@@ -155,7 +158,7 @@ function initMap() {
 
             tc.watch("selectedChildWidget", function(name, oldVal, newVal){
                 if ( newVal.title === "Situatia pe ani" ) {
-                    infoWindow.resize(500, 350);
+                    infoWindow.resize(500, 365);
                     tc.resize();
                     secondChart.resize(450, 250);
                 }
@@ -172,10 +175,23 @@ function initMap() {
             }});
 
             secondChart.addAxis("y", {vertical: true, title:"Decese"});
-            secondChart.addSeries("Series", plotJson[graphic.attributes.tara]);
+            secondChart.addSeries("Numar de decese", plotJsonDeaths[graphic.attributes.tara], {plot: "other", stroke: {color:"red"}, fill: "red"});
+            secondChart.addSeries("Numar de cazuri", plotJsonCases[graphic.attributes.tara],  {plot: "other", stroke: {color:"green"}, fill: "green"});
 
             cp3.set("content", secondChart.node);
 
+            dojo.place(
+              '<div>'+
+                '<table>' +
+                '<tr>' +
+                    '<td><div style="border: solid 1px red; width: 50px"></div></td>' +
+                    '<td>Numar decese</td>' +
+                    '<td><div style="border: solid 1px green; width: 50px"></div></td>' +
+                    '<td>Numar total de cazuri</td>' +
+                '</tr>' +
+                '</table>' +
+            '</div>', cp3.containerNode);
+            var legend = new Legend({ chart: secondChart }, "legend");
             // Create the chart that will display in the second tab.
             var c = domConstruct.create("div", {
                 id: "demoChart"
@@ -307,15 +323,25 @@ function initMap() {
 
                 var currentYear = parseInt(year);
                 var tempYears = [];
-                if(plotJson[country] == undefined){
+                if(plotJsonDeaths[country] == undefined){
                     tempYears = yearsArray.slice();
                     tempYears[currentYear - 1974] = {"x": currentYear, "y": nrOfDeaths};
-                    plotJson[country] = tempYears;
+                    plotJsonDeaths[country] = tempYears;
                 }
                 else{
-                    tempYears = plotJson[country].slice();
+                    tempYears = plotJsonDeaths[country].slice();
                     tempYears[currentYear - 1974] = {"x": currentYear, "y": nrOfDeaths};
-                    plotJson[country] = tempYears;
+                    plotJsonDeaths[country] = tempYears;
+                }
+                if(plotJsonCases[country] == undefined){
+                    tempYears = yearsArray.slice();
+                    tempYears[currentYear - 1974] = {"x": currentYear, "y": nrOfCases};
+                    plotJsonCases[country] = tempYears;
+                }
+                else{
+                    tempYears = plotJsonCases[country].slice();
+                    tempYears[currentYear - 1974] = {"x": currentYear, "y": nrOfCases};
+                    plotJsonCases[country] = tempYears;
                 }
 
             });
