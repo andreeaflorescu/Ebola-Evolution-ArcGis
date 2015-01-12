@@ -162,7 +162,15 @@ function initMap() {
             });
 
             secondChart.addPlot("default", {type: Lines, markers: true});
-            secondChart.addAxis("x", {title: "Ani", titleOrientation: "away"});
+            secondChart.addAxis("x", {title: "Ani", titleOrientation: "away", labelFunc: function(n){
+                var date = new Date(parseInt(n));
+                return dojo.date.locale.format(date,  {
+                    selector: "date",
+                    datePattern: "y",
+                    locale: "en"
+                });
+            }});
+
             secondChart.addAxis("y", {vertical: true, title:"Decese"});
             secondChart.addSeries("Series", plotJson[graphic.attributes.tara]);
 
