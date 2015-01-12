@@ -166,17 +166,18 @@ function initMap() {
 
             secondChart.addPlot("default", {type: Lines, markers: true});
             secondChart.addAxis("x", {title: "Ani", titleOrientation: "away", labelFunc: function(n){
-                var date = new Date(parseInt(n));
+                var date = new Date(parseInt(n * 1000) + "");
                 return dojo.date.locale.format(date,  {
                     selector: "date",
-                    datePattern: "y",
-                    locale: "en"
+                    datePattern: "y"
                 });
             }});
 
             secondChart.addAxis("y", {vertical: true, title:"Decese"});
-            secondChart.addSeries("Numar de decese", plotJsonDeaths[graphic.attributes.tara], {plot: "other", stroke: {color:"red"}, fill: "red"});
-            secondChart.addSeries("Numar de cazuri", plotJsonCases[graphic.attributes.tara],  {plot: "other", stroke: {color:"green"}, fill: "green"});
+            secondChart.addSeries("Numar de decese", plotJsonDeaths[graphic.attributes.tara],
+                {plot: "other", stroke: {color:"red"}, fill: "red"});
+            secondChart.addSeries("Numar de cazuri", plotJsonCases[graphic.attributes.tara],
+                {plot: "other", stroke: {color:"green"}, fill: "green"});
 
             cp3.set("content", secondChart.node);
 
